@@ -72,9 +72,9 @@ func Printf(msgtype MessageType, format string, params ...interface{}) {
 
 // Error formats and calls Output to print to the standard stream,
 // like Println with the messageType ALERT and only if err is not nil
-func Error(err error) error {
+func Error(context string, err error) error {
 	if IsOn && err != nil {
-		fmt.Printf(messageTypeStrings[ALERT] + " " + err.Error())
+		fmt.Printf("%s [%s] %s\n", messageTypeStrings[ALERT], context, err.Error())
 	}
 	return err
 }
