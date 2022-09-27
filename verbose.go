@@ -1,5 +1,5 @@
 /*
-verbose package generate formatted output only when verbose mode is turned on.
+verbose package generates formatted output only when verbose mode is turned on.
 
 MessageType defines the header of the message and its color
   - INFO: `>>info:` in cyan before the message
@@ -28,14 +28,14 @@ type MessageType int
 
 const (
 	INFO    MessageType = 0 // will output ">>info:" in cyan before the messsage
-	WARNING MessageType = 1 // will output ">>warn:" in orange before the messsage
+	WARNING MessageType = 1 // will output ">>warning:" in orange before the messsage
 	ALERT   MessageType = 2 // will output ">>alert:" in red before the messsage
 )
 
 var messageTypeStrings []string = []string{
-	">>\x1b[0;36minfo\x1b[0m:",
-	">>\x1b[38;5;208mwarn\x1b[0m:",
-	">>\x1b[0;31malert\x1b[0m:"}
+	"\x1b[0;36m>>info:\x1b[0m",
+	"\x1b[38;5;208m>>warning:\x1b[0m",
+	"\x1b[0;31m>>alert:\x1b[0m"}
 
 // Println formats using the default formats for its operands and writes to standard output.
 // Spaces are always added between operands and a newline is appended.
@@ -70,6 +70,16 @@ func Printf(msgtype MessageType, format string, params ...interface{}) {
 	fmt.Printf(messageTypeStrings[msgtype]+" "+format, params...)
 }
 
+// PrintfIf formats and calls Output to print to the standard stream.
+// Print out only if verbose IsOn and ok is true.
+// Arguments are handled in the manner of fmt.Printf.
+func PrintfIf(ok bool, msgtype MessageType, format string, params ...interface{}) {
+	if !IsOn || !ok {
+		return
+	}
+	fmt.Printf(messageTypeStrings[msgtype]+" "+format, params...)
+}
+
 // Error formats and calls Output to print to the standard stream,
 // like Println with the messageType ALERT and only if err is not nil
 func Error(context string, err error) error {
@@ -79,7 +89,7 @@ func Error(context string, err error) error {
 	return err
 }
 
-// Assert panic with a formated message if ok is false
+// Assert panics with a formated message if not ok, whatever IsOn
 func Assert(ok bool, format string, params ...interface{}) {
 	if !ok {
 		str := fmt.Sprintf(messageTypeStrings[ALERT]+" "+format, params...)
