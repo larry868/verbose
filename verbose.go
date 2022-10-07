@@ -6,7 +6,8 @@ verbose package generates formatted output only when verbose mode is turned on.
 
 MessageType defines the header of the message and its color
   - INFO: `>>info:` in cyan before the message
-  - WARNING: `>>warn:` in orange before the messsage
+  - TRACKER: `>>tracker:` in green before the messsage
+  - WARNING: `>>warning:` in orange before the messsage
   - ALERT: `>>alert:` in red before the messsage
 
 # Usage
@@ -18,27 +19,32 @@ package verbose
 
 import (
 	"fmt"
+	"time"
 )
 
 // Set this flag to generate verbose output
 var IsOn bool = false
 
 // Type of verbose message, defines the header of the message and its color
-//   - INFO: `>>info:` in cyan before the message
+//   - INFO: 	`>>info:` in cyan before the message
+//   - TRACK: 	`>>track:` in red before the messsage
 //   - WARNING: `>>warn:` in orange before the messsage
-//   - ALERT: `>>alert:` in red before the messsage
+//   - ALERT: 	`>>alert:` in red before the messsage
 type MessageType int
 
 const (
 	INFO    MessageType = 0 // will output ">>info:" in cyan before the messsage
 	WARNING MessageType = 1 // will output ">>warning:" in orange before the messsage
 	ALERT   MessageType = 2 // will output ">>alert:" in red before the messsage
+	TRACK   MessageType = 3 // will output ">>track: {timestamp}" in green before the messsage
 )
 
 var messageTypeStrings []string = []string{
 	"\x1b[0;36m>>info:\x1b[0m",
 	"\x1b[38;5;208m>>warning:\x1b[0m",
-	"\x1b[0;31m>>alert:\x1b[0m"}
+	"\x1b[0;31m>>alert:\x1b[0m",
+	"\033[1;32mtrack:\033[0m",
+}
 
 // Println formats using the default formats for its operands and writes to standard output.
 // Spaces are always added between operands and a newline is appended.
@@ -48,6 +54,9 @@ func Println(msgtype MessageType, params ...interface{}) {
 	}
 	var xparams []interface{}
 	xparams = append(xparams, messageTypeStrings[msgtype])
+	if msgtype == TRACK {
+		xparams = append(xparams, time.Now().Format("20060102 15:04:05"))
+	}
 	xparams = append(xparams, params...)
 	fmt.Println(xparams...)
 }
@@ -60,6 +69,9 @@ func Print(msgtype MessageType, params ...interface{}) {
 	}
 	var xparams []interface{}
 	xparams = append(xparams, messageTypeStrings[msgtype])
+	if msgtype == TRACK {
+		xparams = append(xparams, time.Now().Format("20060102 15:04:05"))
+	}
 	xparams = append(xparams, params...)
 	fmt.Print(xparams...)
 }
@@ -70,7 +82,11 @@ func Printf(msgtype MessageType, format string, params ...interface{}) {
 	if !IsOn {
 		return
 	}
-	fmt.Printf(messageTypeStrings[msgtype]+" "+format, params...)
+	var strtrack string
+	if msgtype == TRACK {
+		strtrack = time.Now().Format("20060102 15:04:05")
+	}
+	fmt.Printf(fmt.Sprintf("%s %s%s", messageTypeStrings[msgtype], strtrack, format), params...)
 }
 
 // PrintfIf formats and calls Output to print to the standard stream.
@@ -80,7 +96,7 @@ func PrintfIf(ok bool, msgtype MessageType, format string, params ...interface{}
 	if !IsOn || !ok {
 		return
 	}
-	fmt.Printf(messageTypeStrings[msgtype]+" "+format, params...)
+	Printf(msgtype, format, params...)
 }
 
 // Error formats and calls Output to print to the standard stream,
