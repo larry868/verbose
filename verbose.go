@@ -43,7 +43,7 @@ var messageTypeStrings []string = []string{
 	"\x1b[0;36m>>info:\x1b[0m",
 	"\x1b[38;5;208m>>warning:\x1b[0m",
 	"\x1b[0;31m>>alert:\x1b[0m",
-	"\033[1;32mtrack:\033[0m",
+	"\033[1;32m>>track:\033[0m",
 }
 
 // Println formats using the default formats for its operands and writes to standard output.
