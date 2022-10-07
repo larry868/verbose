@@ -55,7 +55,7 @@ func Println(msgtype MessageType, params ...interface{}) {
 	var xparams []interface{}
 	xparams = append(xparams, messageTypeStrings[msgtype])
 	if msgtype == TRACK {
-		xparams = append(xparams, time.Now().Format("20060102 15:04:05"))
+		xparams = append(xparams, time.Now().Format("20060102 15:04:05 "))
 	}
 	xparams = append(xparams, params...)
 	fmt.Println(xparams...)
@@ -70,7 +70,7 @@ func Print(msgtype MessageType, params ...interface{}) {
 	var xparams []interface{}
 	xparams = append(xparams, messageTypeStrings[msgtype])
 	if msgtype == TRACK {
-		xparams = append(xparams, time.Now().Format("20060102 15:04:05"))
+		xparams = append(xparams, time.Now().Format("20060102 15:04:05 "))
 	}
 	xparams = append(xparams, params...)
 	fmt.Print(xparams...)
@@ -84,7 +84,7 @@ func Printf(msgtype MessageType, format string, params ...interface{}) {
 	}
 	var strtrack string
 	if msgtype == TRACK {
-		strtrack = time.Now().Format("20060102 15:04:05")
+		strtrack = time.Now().Format("20060102 15:04:05 ")
 	}
 	fmt.Printf(fmt.Sprintf("%s %s%s", messageTypeStrings[msgtype], strtrack, format), params...)
 }
