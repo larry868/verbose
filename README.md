@@ -8,6 +8,8 @@ Every formatted output starts with a colored message type:
   - INFO: `>>info:` in cyan 
   - WARNING: `>>warn:` in orange 
   - ALERT: `>>alert:` in red 
+  - TRACK: `>>track:` in green
+  - DEBUG: `>>debug:` in yellow
 
 Very easy to use like ``fmt.Println``, ``fmt.Printf``... but with `verbose.Println`, ``verbose.Printf``...
 

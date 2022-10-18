@@ -24,6 +24,7 @@ import (
 
 // Set this flag to generate verbose output
 var IsOn bool = false
+var IsDebugging bool = false
 
 // Type of verbose message, defines the header of the message and its color
 //   - INFO: 	`>>info:` in cyan before the message
@@ -37,6 +38,7 @@ const (
 	WARNING MessageType = 1 // will output ">>warning:" in orange before the messsage
 	ALERT   MessageType = 2 // will output ">>alert:" in red before the messsage
 	TRACK   MessageType = 3 // will output ">>track: {timestamp}" in green before the messsage
+	DEBUG   MessageType = 4 // will output ">>debug: in yellow before the messsage
 )
 
 var messageTypeStrings []string = []string{
@@ -44,12 +46,13 @@ var messageTypeStrings []string = []string{
 	"\x1b[38;5;208m>>warning:\x1b[0m",
 	"\x1b[0;31m>>alert:\x1b[0m",
 	"\033[1;32m>>track:\033[0m",
+	"\x1b[0;33m>>debug:\x1b[0m",
 }
 
 // Println formats using the default formats for its operands and writes to standard output.
 // Spaces are always added between operands and a newline is appended.
 func Println(msgtype MessageType, params ...interface{}) {
-	if !IsOn {
+	if !(IsOn || IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	var xparams []interface{}
@@ -64,7 +67,7 @@ func Println(msgtype MessageType, params ...interface{}) {
 // Print formats and calls Output to print to the standard stream.
 // Arguments are handled in the manner of fmt.Print.
 func Print(msgtype MessageType, params ...interface{}) {
-	if !IsOn {
+	if !(IsOn || IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	var xparams []interface{}
@@ -79,7 +82,7 @@ func Print(msgtype MessageType, params ...interface{}) {
 // Printf formats and calls Output to print to the standard stream.
 // Arguments are handled in the manner of fmt.Printf.
 func Printf(msgtype MessageType, format string, params ...interface{}) {
-	if !IsOn {
+	if !(IsOn || IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	var strtrack string
@@ -93,7 +96,7 @@ func Printf(msgtype MessageType, format string, params ...interface{}) {
 // Print out only if verbose IsOn and ok is true.
 // Arguments are handled in the manner of fmt.Printf.
 func PrintfIf(ok bool, msgtype MessageType, format string, params ...interface{}) {
-	if !IsOn || !ok {
+	if !(IsOn || IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	Printf(msgtype, format, params...)
@@ -108,7 +111,7 @@ func Error(context string, err error) error {
 	return err
 }
 
-// Assert panics with a formated message if not ok, whatever IsOn
+// Assert panics with a formated message if not ok, whatever IsOn and IsDebugging
 func Assert(ok bool, format string, params ...interface{}) {
 	if !ok {
 		str := fmt.Sprintf(messageTypeStrings[ALERT]+" "+format, params...)
