@@ -124,7 +124,7 @@ func Track(start time.Time, format string, params ...interface{}) {
 	if !IsOn {
 		return
 	}
-	fmt.Printf(fmt.Sprintf("%s %s << %s\n", messageTypeStrings[TRACK], format, time.Since(start)), params...)
+	fmt.Printf(fmt.Sprintf("%s %s \033[1;32m<< %s\033[0m\n", messageTypeStrings[TRACK], format, time.Since(start)), params...)
 }
 
 // Debug formats and calls Output to print to the standard stream,
