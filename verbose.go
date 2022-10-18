@@ -118,3 +118,19 @@ func Assert(ok bool, format string, params ...interface{}) {
 		panic(str)
 	}
 }
+
+// Track formats and calls Output to print to the standard stream,
+func Track(start time.Time, format string, params ...interface{}) {
+	if !IsOn {
+		return
+	}
+	fmt.Printf(fmt.Sprintf("%s %s << %s\n", messageTypeStrings[TRACK], format, time.Since(start)), params...)
+}
+
+// Debug formats and calls Output to print to the standard stream,
+func Debug(format string, params ...interface{}) {
+	if !IsOn && !IsDebugging {
+		return
+	}
+	fmt.Printf(fmt.Sprintf("%s %s\n", messageTypeStrings[DEBUG], format), params...)
+}
