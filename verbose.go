@@ -103,7 +103,7 @@ func PrintfIf(ok bool, msgtype MessageType, format string, params ...interface{}
 }
 
 // Error formats and calls Output to print to the standard stream,
-// like Println with the messageType ALERT and only if err is not nil
+// like Println with the messageType ALERT and only if err is not nil.
 func Error(context string, err error) error {
 	if IsOn && err != nil {
 		fmt.Printf("%s [%s] %s\n", messageTypeStrings[ALERT], context, err.Error())
@@ -111,7 +111,7 @@ func Error(context string, err error) error {
 	return err
 }
 
-// Assert panics with a formated message if not ok, whatever IsOn and IsDebugging
+// Assert panics with a formated message if not ok, whatever IsOn and IsDebugging.
 func Assert(ok bool, format string, params ...interface{}) {
 	if !ok {
 		str := fmt.Sprintf(messageTypeStrings[ALERT]+" "+format, params...)
@@ -119,7 +119,7 @@ func Assert(ok bool, format string, params ...interface{}) {
 	}
 }
 
-// Track formats and calls Output to print to the standard stream,
+// Track generate output a time tracker and a message if verbose IsOn, otherwise does nothing.
 func Track(start time.Time, format string, params ...interface{}) {
 	if !IsOn {
 		return
@@ -127,9 +127,9 @@ func Track(start time.Time, format string, params ...interface{}) {
 	fmt.Printf(fmt.Sprintf("%s %s \033[1;32m<< %s\033[0m\n", messageTypeStrings[TRACK], format, time.Since(start)), params...)
 }
 
-// Debug formats and calls Output to print to the standard stream,
+// Debug prints a formated string to the standard stream only if versbode IsDebugging is true, otherwise does nothing.
 func Debug(format string, params ...interface{}) {
-	if !IsOn && !IsDebugging {
+	if !IsDebugging {
 		return
 	}
 	fmt.Printf(fmt.Sprintf("%s %s\n", messageTypeStrings[DEBUG], format), params...)
