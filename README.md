@@ -2,7 +2,7 @@
 
 verbose package generates formatted output only when verbose mode is turned on.
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/sunraylab/verbose.svg)](https://pkg.go.dev/github.com/sunraylab/verbose)
+[![Go Reference](https://pkg.go.dev/badge/github.com/lolorenzo777/verbose.svg)](https://pkg.go.dev/github.com/lolorenzo777/verbose)
 
 Every formatted output starts with a colored message type:
   - INFO: `>>info:` in cyan 
