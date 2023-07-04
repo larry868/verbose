@@ -96,7 +96,7 @@ func Printf(msgtype MessageType, format string, params ...interface{}) {
 // Print out only if verbose IsOn and ok is true.
 // Arguments are handled in the manner of fmt.Printf.
 func PrintfIf(ok bool, msgtype MessageType, format string, params ...interface{}) {
-	if !IsOn && !(IsDebugging && msgtype == DEBUG) {
+	if !ok || (!IsOn && !(IsDebugging && msgtype == DEBUG)) {
 		return
 	}
 	Printf(msgtype, format, params...)
