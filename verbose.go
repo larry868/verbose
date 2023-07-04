@@ -52,7 +52,7 @@ var messageTypeStrings []string = []string{
 // Println formats using the default formats for its operands and writes to standard output.
 // Spaces are always added between operands and a newline is appended.
 func Println(msgtype MessageType, params ...interface{}) {
-	if !(IsOn || IsDebugging && msgtype == DEBUG) {
+	if !IsOn && !(IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	var xparams []interface{}
@@ -67,7 +67,7 @@ func Println(msgtype MessageType, params ...interface{}) {
 // Print formats and calls Output to print to the standard stream.
 // Arguments are handled in the manner of fmt.Print.
 func Print(msgtype MessageType, params ...interface{}) {
-	if !(IsOn || IsDebugging && msgtype == DEBUG) {
+	if !IsOn && !(IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	var xparams []interface{}
@@ -82,7 +82,7 @@ func Print(msgtype MessageType, params ...interface{}) {
 // Printf formats and calls Output to print to the standard stream.
 // Arguments are handled in the manner of fmt.Printf.
 func Printf(msgtype MessageType, format string, params ...interface{}) {
-	if !(IsOn || IsDebugging && msgtype == DEBUG) {
+	if !IsOn && !(IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	var strtrack string
@@ -96,7 +96,7 @@ func Printf(msgtype MessageType, format string, params ...interface{}) {
 // Print out only if verbose IsOn and ok is true.
 // Arguments are handled in the manner of fmt.Printf.
 func PrintfIf(ok bool, msgtype MessageType, format string, params ...interface{}) {
-	if !(IsOn || IsDebugging && msgtype == DEBUG) {
+	if !IsOn && !(IsDebugging && msgtype == DEBUG) {
 		return
 	}
 	Printf(msgtype, format, params...)
