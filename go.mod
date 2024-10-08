@@ -1,3 +1,3 @@
-module github.com/lolorenzo777/verbose
+module github.com/larry868/verbose
 
-go 1.20
+go 1.23
